@@ -1,6 +1,7 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import Stats from "three/examples/jsm/libs/stats.module"
+import { GUI } from "dat.gui"
 
 const scene = new THREE.Scene()
 
@@ -15,12 +16,11 @@ new OrbitControls(camera, renderer.domElement)
 
 const geometry = new THREE.TorusGeometry()
 const material = new THREE.MeshBasicMaterial({
-  color: 0xffffff,
   wireframe: true
 })
 
-const cube = new THREE.Mesh(geometry, material)
-scene.add(cube)
+const occurrence = new THREE.Mesh(geometry, material)
+scene.add(occurrence)
 
 window.addEventListener("resize", onWindowResize, false)
 function onWindowResize() {
@@ -33,12 +33,18 @@ function onWindowResize() {
 const stats = new Stats()
 document.body.appendChild(stats.dom)
 
+const gui = new GUI()
+const modelFolder = gui.addFolder("Model")
+modelFolder.open()
+modelFolder.add(occurrence.rotation, "x", 0, Math.PI * 2)
+modelFolder.add(occurrence.rotation, "y", 0, Math.PI * 2)
+modelFolder.add(occurrence.rotation, "z", 0, Math.PI * 2)
+const cameraFolder = gui.addFolder("Camera")
+cameraFolder.open()
+cameraFolder.add(camera.position, "z", 1, 20)
+
 function animate() {
   requestAnimationFrame(animate)
-
-  cube.rotation.x += 0.001
-  cube.rotation.y += 0.001
-
   render()
   stats.update()
 }
