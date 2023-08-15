@@ -10,11 +10,12 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
-new OrbitControls(camera, renderer.domElement)
+const controls = new OrbitControls(camera, renderer.domElement)
+controls.addEventListener("change", render)
 
 const geometry = new THREE.TorusGeometry()
 const material = new THREE.MeshBasicMaterial({
-  color: 0x00ff00,
+  color: 0xffffff,
   wireframe: true
 })
 
@@ -29,17 +30,8 @@ function onWindowResize() {
   render()
 }
 
-function animate() {
-  requestAnimationFrame(animate)
-
-  cube.rotation.x += 0.001
-  cube.rotation.y += 0.001
-
-  render()
-}
-
 function render() {
   renderer.render(scene, camera)
 }
 
-animate()
+render()
