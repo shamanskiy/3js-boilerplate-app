@@ -1,5 +1,6 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import Stats from "three/examples/jsm/libs/stats.module"
 
 const scene = new THREE.Scene()
 
@@ -10,8 +11,7 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
-const controls = new OrbitControls(camera, renderer.domElement)
-controls.addEventListener("change", render)
+new OrbitControls(camera, renderer.domElement)
 
 const geometry = new THREE.TorusGeometry()
 const material = new THREE.MeshBasicMaterial({
@@ -30,8 +30,21 @@ function onWindowResize() {
   render()
 }
 
+const stats = new Stats()
+document.body.appendChild(stats.dom)
+
+function animate() {
+  requestAnimationFrame(animate)
+
+  cube.rotation.x += 0.001
+  cube.rotation.y += 0.001
+
+  render()
+  stats.update()
+}
+
 function render() {
   renderer.render(scene, camera)
 }
 
-render()
+animate()
